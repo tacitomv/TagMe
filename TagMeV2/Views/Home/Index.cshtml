@@ -1,0 +1,265 @@
+﻿<div id="body">
+	<section class="featured">
+		<div class="content-wrapper">
+			<button data-bind="click: register">register</button>
+			<button data-bind="click: getLocation">getLocation</button>
+			<select data-bind="options: AccessPoints, selectedOptions: chosenAccessPoint, optionsText: 'Name'"></select>
+			<button data-bind="click: registerAccessPoint">registerAccessPoint</button>
+		</div>
+		<div class="content-wrapper">
+			<hgroup class="title">
+				<h1>Welcome to ASP.NET Web API!</h1>
+				<h2>Modify the code in this template to jump-start your ASP.NET Web API development.</h2>
+			</hgroup>
+			<p>
+				ASP.NET Web API allows you to expose your applications, data and services to the
+                web directly over HTTP.
+			</p>
+			<p>
+				To learn more about ASP.NET Web API visit the
+                <a href="http://go.microsoft.com/fwlink/?LinkID=238195" title="ASP.NET Web API Website">ASP.NET Web API Website</a>.
+                The page features <mark>videos, tutorials, and samples</mark> to help you get the most from ASP.NET Web API.
+                If you have any questions about ASP.NET Web API, visit
+                <a href="http://go.microsoft.com/fwlink/?LinkID=238196" title="ASP.NET Web API Forum">our forums</a>.
+			</p>
+		</div>
+	</section>
+	<section class="content-wrapper main-content clear-fix">
+		<h3>We suggest the following steps:</h3>
+		<ol class="round">
+			<li class="one">
+				<h5>Getting Started</h5>
+				ASP.NET Web API is a framework that makes it easy to build HTTP services that reach
+                a broad range of clients, including browsers and mobile devices. ASP.NET Web API
+                is an ideal platform for building RESTful applications on the .NET Framework.
+                <a href="http://go.microsoft.com/fwlink/?LinkId=245160">Learn more…</a>
+			</li>
+
+			<li class="two">
+				<h5>Add NuGet packages and jump-start your coding</h5>
+				NuGet makes it easy to install and update free libraries and tools.
+                <a href="http://go.microsoft.com/fwlink/?LinkId=245161">Learn more…</a>
+			</li>
+			<li class="three">
+				<h5>Find Web Hosting</h5>
+				You can easily find a web hosting company that offers the right mix of features
+                and price for your applications.
+                <a href="http://go.microsoft.com/fwlink/?LinkId=245164">Learn more…</a>
+			</li>
+		</ol>
+	</section>
+</div>
+
+
+<script type="text/javascript">
+	var appBase = '/TagMeV2/';
+	function DataService() {
+		this.MobileDevices = {
+			Register : function(device, xhrOptions) {
+				data = {
+					dataType: 'json',
+					type: 'GET',
+					url: appBase + 'api/MD/Register',
+					data: device
+				}
+
+				$.extend(data, xhrOptions);
+
+				$.ajax(data);
+			},
+			MyLocation : function(id, aps, xhrOptions) {
+				data = {
+					dataType: 'json',
+					type: 'POST',
+					url: appBase + 'api/MD/MyLocation/' + id,
+					data: aps
+				};
+
+			    $.extend(data, xhrOptions);
+
+			    $.ajax(data);
+			}
+		}
+		this.AccessPoints = {
+		    Register : function(device, xhrOptions) {
+		        data = {
+		            dataType: 'json',
+		            type: 'POST',
+		            url: appBase + 'api/AP/Register',
+		            data: device
+		        }
+
+		        $.extend(data, xhrOptions);
+
+		        $.ajax(data);
+		    }
+		}
+	}
+
+	function MobileDeviceViewMobel(data){
+	    var self = this;
+
+	    self.Id = ko.observable();
+	    self.Name = ko.observable();
+	    self.MACAddress = ko.observable();
+	    self.Context = ko.observable();
+	    self.LastSeen = ko.observable();
+	    self.Tags = ko.observable();
+
+	    if (data) {
+	        self.Id(data._id);
+	        self.Name(data.Name);
+	        self.MACAddress(data.MACAddress);
+	        self.Context(data.Context);
+	        self.LastSeen(data.LastSeen);
+	        self.Tags(data.Tags);
+	    }
+	    else {
+            //FAKE DATA
+	        self.Id("");
+	        self.Name("Test Device");
+	        self.MACAddress("FF:FF:FF:FF");
+	        self.Context("Global");
+	        self.LastSeen(null);
+	        self.Tags("Programação;C#;Java");
+	    }
+	}
+
+	function AccessPointViewMobel(data) {
+		var self = this;
+
+		self.Id = ko.observable();
+		self.Name = ko.observable();
+		self.BSSID = ko.observable();
+		self.Frequency = ko.observable();
+		self.Capabilities = ko.observable();
+		self.Location = ko.observable();
+
+		if (data) {
+			self.Id(data._id);
+			self.Name(data.Name);
+			self.BSSID(data.BSSID);
+			self.Frequency(data.Frequency);
+			self.Capabilities(data.Capabilities);
+			self.Location(data.Location);
+		}
+	}
+
+	function ViewModel(dataService) {
+	    var self = this;
+
+	    self.MobileDevice = ko.observable(new MobileDeviceViewMobel());
+
+	    self.AccessPoint0 = ko.observable(new AccessPointViewMobel({
+	        Name: "Access Point 0",
+	        BSSID: "FAKEFAKEFAKE",
+	        Frequency: "2412",
+	        Capabilities: "FAKEFAKEFAKE",
+	        Location: {
+	            _x: 0,
+	            _y: 0
+	        }
+	    }));
+
+	    self.AccessPoint1 = ko.observable(new AccessPointViewMobel({
+	        Name: "Access Point 1",
+	        BSSID: "FAKEFAKEFAKE",
+	        Frequency: "2412",
+	        Capabilities: "FAKEFAKEFAKE",
+	        Location: {
+	            _x: 20,
+	            _y: 40
+	        }
+	    }));
+
+	    self.AccessPoint2 = ko.observable(new AccessPointViewMobel({
+	        Name: "Access Point 2",
+	        BSSID: "FAKEFAKEFAKE",
+	        Frequency: "2412",
+	        Capabilities: "FAKEFAKEFAKE",
+	        Location: {
+	            _x: 50,
+	            _y: 30
+	        }
+	    }));
+
+	    self.AccessPoints = ko.observableArray([
+			self.AccessPoint0(),
+			self.AccessPoint1(),
+			self.AccessPoint2()
+	    ]);
+
+	    self.chosenAccessPoint = ko.observable();
+
+		self.register = function () {
+			dataService.MobileDevices.Register(self.MobileDevice(), {
+				success: function (response) {
+				    toastr.success("Sucesso");
+				    self.MobileDevice(new MobileDeviceViewMobel(response));
+				},
+				error: function (jqXHR, textStatus, errorThrown) {
+					console.log(jqXHR, textStatus, errorThrown);
+					toastr.error("Erro");
+					return;
+				}
+			});
+		}
+
+		self.FakeInfo = {
+			Local: {_x: 34, _y:44},
+			APs: [
+                {
+                	AP: self.AccessPoint0(),
+                	Signal: -82,
+					Distance: null
+                },
+                {
+                	AP: self.AccessPoint1(),
+                	Signal: -34,
+                	Distance: null
+                },
+                {
+                	AP: self.AccessPoint2(),
+                	Signal: -47,
+                	Distance: null
+                }
+			]
+		}
+
+		self.getLocation = function () {
+		    dataService.MobileDevices.MyLocation(
+                self.MobileDevice().Id(),
+                self.FakeInfo, {
+		        success: function (response) {
+		            toastr.success("Sucesso");
+		        },
+		        error: function (jqXHR, textStatus, errorThrown) {
+		            toastr.error("Erro");
+		            return;
+		        }
+		    });
+		}
+
+		self.registerAccessPoint = function () {
+			dataService.AccessPoints.Register(self.AccessPoint0(), {
+				success: function (response) {
+					toastr.success("Sucesso");
+					self.AccessPoint0(new AccessPointViewMobel(response));
+				},
+				error: function (jqXHR, textStatus, errorThrown) {
+					toastr.error("Erro");
+					return;
+				}
+			});
+		}
+	}
+
+	var vm = new ViewModel(new DataService());
+	ko.applyBindings(vm);
+	//http://stackoverflow.com/questions/2827662/android-how-to-scan-access-points-and-select-strongest-signal
+	//http://code.msdn.microsoft.com/windowsapps/Network-Information-Sample-63aaa201
+	//http://stackoverflow.com/questions/8542161/get-network-information-of-a-computer
+	//http://support.microsoft.com/kb/307023
+	//http://social.msdn.microsoft.com/Forums/en-US/netfxnetcom/thread/1344dad4-dffe-486c-bf30-1b75d21fc9ba/
+
+</script>
